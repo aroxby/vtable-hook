@@ -17,7 +17,7 @@ public:
         const void *vidx = *(void**)(&fn);  //TODO: pointers to virtual are 64-bit
         size_t idx = (size_t)vidx;
         idx--;
-        printf("GET %p.%p[%p] = %p\n", this, vtbl, vidx, vtbl[idx]);
+        // printf("GET %p.%p[%p] = %p\n", this, vtbl, vidx, vtbl[idx]);
         return vtbl[idx];
     }
 
@@ -27,7 +27,7 @@ public:
         const void *vidx = *(void**)(&fn);
         size_t idx = (size_t)vidx;
         idx--;
-        printf("SET %p.%p[%p] = %p\n", this, vtbl, vidx, vrep);
+        // printf("SET %p.%p[%p] = %p\n", this, vtbl, vidx, vrep);
         vtbl[(size_t)idx] = vrep;
     }
 };
