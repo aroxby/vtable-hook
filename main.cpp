@@ -8,6 +8,13 @@ public:
     }
 };
 
+class Dummy {
+public:
+    virtual int fn(void *vp) {
+        return printf("%p.fn(%p)\n", this, vp);
+    }
+};
+
 class VTable {
 public:
     const void **vtbl;
@@ -41,8 +48,8 @@ void install_new_vtable(void *obj, int num_members = 1) {
     memcpy(obj, &new_table.vtbl, sizeof(new_table.vtbl));
 }
 
-int thisfn(void *vp) {
-    return printf("%s.tn(%p)\n", "[]", vp);
+int __thiscall thisfn(void *self, void *vp) {
+    return printf("%p.tn(%p)\n", self, vp);
 }
 
 int main() {
@@ -61,6 +68,11 @@ int main() {
 
     t->set(&v->fn, &thisfn);
     printf("%I64p = %p\n", &v->fn, t->get(&v->fn));
+
+    // Clear v from the stack (I think)
+    Dummy *d = new Dummy;
+    d->fn((void*)0x1337);
+
     int r = v->fn((void*)0xCAFE);
 
     printf("Done, %s\n", r==16?"T":"F");
