@@ -14,15 +14,20 @@ public:
     template <typename Member>
     const void *get(const Member fn) const {
         const void *vidx = *(void**)(&fn);  //TODO: pointers to virtual are 64-bit
-        return vtbl[(size_t)vidx];
+        size_t idx = (size_t)vidx;
+        idx--;
+        printf("GET %p.%p[%p] = %p\n", this, vtbl, vidx, vtbl[idx]);
+        return vtbl[idx];
     }
 
     template <typename Member, typename Repr>
     void *set(const Member fn, const Repr value) {
-        const void *vidx = *(void**)(&fn);
         const void *vrep = *(void**)(&value);
+        const void *vidx = *(void**)(&fn);
+        size_t idx = (size_t)vidx;
+        idx--;
         printf("SET %p.%p[%p] = %p\n", this, vtbl, vidx, vrep);
-        vtbl[(size_t)vidx] = vrep;
+        vtbl[(size_t)idx] = vrep;
     }
 };
 
