@@ -29,7 +29,7 @@ public:
     }
 
     template <typename Member, typename Repr>
-    void *set(const Member fn, const Repr value) {
+    void set(const Member fn, const Repr value) {
         const void *vrep = *(void**)(&value);
         const void *vidx = *(void**)(&fn);
         size_t idx = (size_t)vidx;
